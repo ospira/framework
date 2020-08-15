@@ -109,7 +109,7 @@ class RouteListCommand extends Command
     protected function getRouteInformation(Route $route)
     {
         return $this->filterRoute([
-            'domain' => $route->domain(),
+            'domain' => $this->getDomains($route),
             'method' => implode('|', $route->methods()),
             'uri'    => $route->uri(),
             'name'   => $route->getName(),
@@ -172,6 +172,19 @@ class RouteListCommand extends Command
     {
         return collect($route->gatherMiddleware())->map(function ($middleware) {
             return $middleware instanceof Closure ? 'Closure' : $middleware;
+        })->implode(',');
+    }
+
+        /**
+     *
+     *
+     * @param  \Illuminate\Routing\Route  $route
+     * @return string
+     */
+    protected function getDomains($route)
+    {
+        return collect($route->gatherDomains())->map(function ($domain) {
+            return $domain instanceof String ? 'String' : $domain;
         })->implode(',');
     }
 

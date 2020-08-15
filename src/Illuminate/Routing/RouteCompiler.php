@@ -36,6 +36,7 @@ class RouteCompiler
         $uri = preg_replace('/\{(\w+?)\?\}/', '{$1}', $this->route->uri());
 
         return (
+            //error here - expects getDomain() to be a string or null not an array
             new SymfonyRoute($uri, $optionals, $this->route->wheres, ['utf8' => true], $this->route->getDomain() ?: '')
         )->compile();
     }

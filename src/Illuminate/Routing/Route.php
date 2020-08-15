@@ -99,6 +99,13 @@ class Route
     public $computedMiddleware;
 
     /**
+     * The computed gathered domains.
+     *
+     * @var array|null
+     */
+    public $computedDomains;
+
+    /**
      * The compiled version of the route.
      *
      * @var \Symfony\Component\Routing\CompiledRoute
@@ -586,7 +593,8 @@ class Route
      * @param  string|null  $domain
      * @return $this|string|null
      */
-    public function domain($domain = null)
+    //defunct
+/*     public function domain($domain = null)
     {
         if (is_null($domain)) {
             return $this->getDomain();
@@ -595,17 +603,37 @@ class Route
         $this->action['domain'] = $domain;
 
         return $this;
+    } */
+
+    /**
+     * Get all domains
+     *
+     * @return array
+     */
+
+    public function gatherDomains()
+    {
+        if (! is_null($this->computedDomains)) {
+            return $this->computedDomains;
+        }
+
+        $this->computedDomains = [];
+
+        return $this->computedDomains = array_unique(
+        $this->getDomain(), SORT_REGULAR);
     }
 
     /**
      * Get the domain defined for the route.
-     *
-     * @return string|null
+     *  
+     * @return $this|array
      */
     public function getDomain()
     {
+        /* echo isset($this->action['domain'])
+        ? "toodles" . var_dump($this->action['domain']) : "null"; */
         return isset($this->action['domain'])
-                ? str_replace(['http://', 'https://'], '', $this->action['domain']) : null;
+                ? str_replace(['http://', 'https://'], '', (array) $this->action['domain']) : null;
     }
 
     /**
